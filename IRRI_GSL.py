@@ -24,7 +24,7 @@ def init_connection():
 STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) /'static'
 DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "downloads")
 if not DOWNLOADS_PATH.is_dir():
-    DOWNLOADS_PATH.mkdir()
+    DOWNLOADS_PATH.mkdir(exist_ok=True)
 def main(df):
     st.markdown("Download from [downloads/mydata.csv](downloads/mydata.csv)")
     mydataframe = df

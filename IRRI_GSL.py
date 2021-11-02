@@ -48,7 +48,7 @@ def dataview_s(conn,filters):
     try:
     #Display code for Samples
         query = "SELECT * FROM public.gsl_samples"
-        samples = pd.read_sql_query(query + " LIMIT 30000", conn)
+        samples = pd.read_sql_query(query + " LIMIT 100000", conn)
         s_cont = st.container()
         s_cont.header('Samples and Products')
         s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward. NOTE! Limited to 500 rows due to server limitations.')

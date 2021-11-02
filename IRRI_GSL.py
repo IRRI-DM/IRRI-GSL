@@ -25,13 +25,7 @@ STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) /'static'
 DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "downloads")
 if not DOWNLOADS_PATH.is_dir():
     DOWNLOADS_PATH.mkdir(exist_ok=True)
-def main(df):
-    st.markdown("Download from [downloads/mydata.csv](downloads/mydata.csv)")
-    mydataframe = df
-    csv = mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
-    return csv
-if __name__ == "__main__":
-    main()
+
 
 #Page View
 def dataview_r(conn, filters):
@@ -65,6 +59,13 @@ def dataview_s(conn,filters):
         s_cont = st.container()
         s_cont.header('Samples and Products')
         s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward.')
+        def main(samples):
+            st.markdown("Download from [downloads/mydata.csv](downloads/mydata.csv)")
+            mydataframe = samples
+            csv = mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
+            return csv
+        if __name__ == "__main__":
+            main(samples)
         samples = main(samples)
         df = pd.DataFrame(samples)
         filter = np.full(len(df), True)

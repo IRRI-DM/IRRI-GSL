@@ -38,8 +38,11 @@ def dataview_r(conn, filters):
                         filter
                         & (df[feature_name] == val))
         r_cont.dataframe(df[filter])
-        rcsv = df[filter].to_csv().encode('utf-8')
-        st.download_button(label='Download service request as CSV', data=rcsv, file_name='GSL Service Requests.csv',mime='text/csv')
+        rcsv = df.to_csv().encode('utf-8')
+        rcsv_head = df[filter].to_csv().encode('utf-8')
+        r1,r2,r3,r4 = r_cont.columns(4)
+        r1.download_button(label='Download ALL service requests as CSV', data=rcsv, file_name='GSL Service Requests.csv',mime='text/csv')
+        r2.download_button(label='Download Visible service requests as CSV', data=rcsv_head, file_name='GSL Service Requests.csv',mime='text/csv')
         conn.close()
     except:
         st.write()
@@ -63,9 +66,9 @@ def dataview_s(conn,filters):
                         filter
                         & (df[feature_name] == val))
         s_cont.dataframe(df[filter].head(1000))
-        scsv = df[filter].to_csv().encode('utf-8')
-        scsv_head = df[filter].head().to_csv().encode('utf-8')
-        s1,s2 = s_cont.columns(2)
+        scsv = df.to_csv().encode('utf-8')
+        scsv_head = df[filter].to_csv().encode('utf-8')
+        s1,s2,s3,s4 = s_cont.columns(4)
         s1.download_button(label='Download ALL samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
         s2.download_button(label='Download Visible samples as CSV', data=scsv_head, file_name='GSL Samples/Product.csv',mime='text/csv')
         conn.close()

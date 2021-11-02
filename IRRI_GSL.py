@@ -52,7 +52,10 @@ def dataview_s(conn,filters):
         s_cont = st.container()
         s_cont.header('Samples and Products')
         s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward. NOTE! Limited to 500 rows due to server limitations.')
+        s_cont.dataframe(samples)
+        s_cont.write('after st data')
         df = pd.DataFrame(samples)
+        s_cont.write('After pd data')
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
             if feature_name in ['designation','gid','source_study_name']:

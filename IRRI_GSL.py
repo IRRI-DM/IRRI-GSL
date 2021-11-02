@@ -37,8 +37,8 @@ def dataview_r(conn, filters):
                         filter
                         & (df[feature_name] == val))
         r_cont.dataframe(df[filter])
- #       rcsv = df[filter].to_csv().encode('utf-8')
-#        st.download_button(label='Download service request as CSV', data=rcsv, file_name='GSL Service Requests.csv',mime='text/csv')
+        rcsv = df[filter].to_csv().encode('utf-8')
+        st.download_button(label='Download service request as CSV', data=rcsv, file_name='GSL Service Requests.csv',mime='text/csv')
         conn.close()
     except:
         st.write()
@@ -52,9 +52,8 @@ def dataview_s(conn,filters):
         s_cont = st.container()
         s_cont.header('Samples and Products')
         s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward. NOTE! Limited to 500 rows due to server limitations.')
-        s_cont.dataframe(samples)
-        s_cont.write('after st data')
-        df = pd.DataFrame(samples)
+        csv = samples.to_csv().encode('utf-8')
+        df = pd.DataFrame(csv)
         s_cont.write('After pd data')
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():

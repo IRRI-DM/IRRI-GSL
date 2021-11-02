@@ -65,9 +65,8 @@ def dataview_s(conn,filters):
             csv = mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
             return csv
         if __name__ == "__main__":
-            main(samples)
-        samples = main(samples)
-        df = pd.DataFrame(samples)
+            csv=main(samples)
+        df = pd.read_csv(csv)
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
             if feature_name in ['designation','gid','source_study_name']:

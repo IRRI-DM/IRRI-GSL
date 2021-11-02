@@ -5,6 +5,7 @@ import os
 import warnings
 import pandas.io.sql as psql
 import psycopg2
+import pathlib
 warnings.filterwarnings('ignore')
 
 #Page construction

@@ -65,8 +65,9 @@ def dataview_s(conn,filters):
         s_cont.dataframe(df[filter].head(1000))
         scsv = df[filter].to_csv().encode('utf-8')
         scsv_head = df[filter].head().to_csv().encode('utf-8')
-        col1.download_button(label='Download ALL samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
-        col2.download_button(label='Download Visible samples as CSV', data=scsv_head, file_name='GSL Samples/Product.csv',mime='text/csv')
+        s1,s2 = s_cont.columns(2)
+        s1.download_button(label='Download ALL samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
+        s2.download_button(label='Download Visible samples as CSV', data=scsv_head, file_name='GSL Samples/Product.csv',mime='text/csv')
         conn.close()
     except psycopg2.Error as e:
         st.write(e)

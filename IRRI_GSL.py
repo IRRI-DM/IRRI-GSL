@@ -90,10 +90,9 @@ with st.expander('Please Login Here', expanded= not st.session_state.initializer
         if submitted:
             st.secrets['postgres']['user'] = username
             st.secrets['postgres']['password'] = password
-            try:
-                validate()
+            if validate():
                 st.session_state.initializer = True
-            except:
+            else:
                 st.session_state.initializer = 'Blank'
             
 #Data page

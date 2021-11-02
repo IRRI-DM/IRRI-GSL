@@ -62,11 +62,10 @@ def dataview_s(conn,filters):
         def main(samples):
             st.markdown("Download from [downloads/mydata.csv](downloads/mydata.csv)")
             mydataframe = samples
-            csv = mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
-            return csv
+            mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
         if __name__ == "__main__":
-            csv=main(samples)
-        df = pd.read_csv(csv)
+            main(samples)
+        df = pd.read_csv(str(DOWNLOADS_PATH / "mydata.csv"))
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
             if feature_name in ['designation','gid','source_study_name']:

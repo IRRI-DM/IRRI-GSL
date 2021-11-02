@@ -20,12 +20,6 @@ def page_construct():
 def init_connection():
     return psycopg2.connect(**st.secrets["postgres"])
 
-#For large datasets
-STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) /'static'
-DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "downloads")
-if not DOWNLOADS_PATH.is_dir():
-    DOWNLOADS_PATH.mkdir(exist_ok=True)
-
 
 #Page View
 def dataview_r(conn, filters):
@@ -58,14 +52,7 @@ def dataview_s(conn,filters):
         samples = pd.read_sql_query(query, conn)
         s_cont = st.container()
         s_cont.header('Samples and Products')
-        s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward.')
-        def main(samples):
-            st.markdown("Download from [downloads/mydata.csv](downloads/mydata.csv)")
-            mydataframe = samples
-            mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
-        if __name__ == "__main__":
-            main(samples)
-        df = pd.read_csv(str(DOWNLOADS_PATH / "mydata.csv"))
+        s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward. NOTE: The table only shows the head of 1,000 rows. To view all, use the download buttons below.')
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
             if feature_name in ['designation','gid','source_study_name']:
@@ -76,7 +63,9 @@ def dataview_s(conn,filters):
         s_cont.dataframe(df[filter].head(1000))
         s_cont.write('after dataframe')
         scsv = df[filter].to_csv().encode('utf-8')
-        st.download_button(label='Download samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
+        scsv_head = df[filter].head().to_csv().encode('utf-8')
+        st.download_button(label='Download ALL samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
+        st.download_button(label='Download Visible samples as CSV', data=scsv_head, file_name='GSL Samples/Product.csv',mime='text/csv')
         conn.close()
     except psycopg2.Error as e:
         st.write(e)

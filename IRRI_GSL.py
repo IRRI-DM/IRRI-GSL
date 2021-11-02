@@ -19,6 +19,17 @@ def page_construct():
 def init_connection():
     return psycopg2.connect(**st.secrets["postgres"])
 
+#For large dataframes
+STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) / 'static'
+DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "downloads")
+if not DOWNLOADS_PATH.is_dir():
+    DOWNLOADS_PATH.mkdir()
+def main(df):
+    st.markdown("Download from [downloads/mydata.csv](downloads/mydata.csv)")
+    mydataframe = df
+    mydataframe.to_csv(str(DOWNLOADS_PATH / "samples.csv"), index=False)
+if __name__ == "__main__":
+    main()
     
 #Page View
 def dataview_r(conn, filters):
@@ -37,8 +48,8 @@ def dataview_r(conn, filters):
                         filter
                         & (df[feature_name] == val))
         r_cont.dataframe(df[filter])
-        rcsv = df[filter].to_csv().encode('utf-8')
-        st.download_button(label='Download service request as CSV', data=rcsv, file_name='GSL Service Requests.csv',mime='text/csv')
+ #       rcsv = df[filter].to_csv().encode('utf-8')
+#        st.download_button(label='Download service request as CSV', data=rcsv, file_name='GSL Service Requests.csv',mime='text/csv')
         conn.close()
     except:
         st.write()

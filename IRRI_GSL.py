@@ -48,7 +48,7 @@ def dataview_s(conn,filters):
     try:
     #Display code for Samples
         query = "SELECT * FROM public.gsl_samples"
-        samples = pd.read_sql_query(query + " LIMIT 1000", conn)
+        samples = pd.read_sql_query(query + " LIMIT 10000", conn)
         s_cont = st.container()
         s_cont.header('Samples and Products')
         s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward. NOTE! Limited to 500 rows due to server limitations.')
@@ -63,9 +63,9 @@ def dataview_s(conn,filters):
         s_cont.dataframe(df[filter])
         scsv = df[filter].to_csv().encode('utf-8')
         with conn.cursor() as cur:
-            cur.itersize = 500000
+            cur.itersize = 250000
             cur.execute(query)
-            all = cur.fetchall()
+            all = cur.fetchmany(500000)
         st.download_button(label='Download samples as CSV (visible in table)', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
         st.download_button(label='Download samples as CSV (all)', data=all, file_name='All GSL Samples/Product.csv',mime='text/csv')
         conn.close()

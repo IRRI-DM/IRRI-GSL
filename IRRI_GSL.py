@@ -47,7 +47,7 @@ def dataview_r(conn, filters):
 def dataview_s(conn,filters):
     try:
     #Display code for Samples
-        query = "SELECT * FROM public.gsl_samples LIMIT 500"
+        query = "SELECT * FROM public.gsl_samples LIMIT 1000"
         samples = pd.read_sql_query(query, conn)
         s_cont = st.container()
         s_cont.header('Samples and Products')

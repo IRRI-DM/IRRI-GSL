@@ -73,8 +73,7 @@ def dataview_s(conn,filters):
                     filter = (
                         filter
                         & (df[feature_name] == val))
-        s_cont.dataframe(df[filter])
-        s_cont.write(df)
+        s_cont.dataframe(df[filter].head(1000))
         s_cont.write('after dataframe')
         scsv = df[filter].to_csv().encode('utf-8')
         st.download_button(label='Download samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')

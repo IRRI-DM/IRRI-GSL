@@ -31,7 +31,7 @@ def main(df):
     csv = mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
     return csv
 if __name__ == "__main__":
-    main(df)
+    main()
 
 #Page View
 def dataview_r(conn, filters):

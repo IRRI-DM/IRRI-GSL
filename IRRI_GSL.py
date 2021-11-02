@@ -53,6 +53,7 @@ def dataview_s(conn,filters):
         s_cont = st.container()
         s_cont.header('Samples and Products')
         s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward. NOTE: The table only shows the head of 1,000 rows. To view all, use the download buttons below.')
+        df = pd.DataFrame(samples)
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
             if feature_name in ['designation','gid','source_study_name']:
@@ -61,7 +62,6 @@ def dataview_s(conn,filters):
                         filter
                         & (df[feature_name] == val))
         s_cont.dataframe(df[filter].head(1000))
-        s_cont.write('after dataframe')
         scsv = df[filter].to_csv().encode('utf-8')
         scsv_head = df[filter].head().to_csv().encode('utf-8')
         st.download_button(label='Download ALL samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')

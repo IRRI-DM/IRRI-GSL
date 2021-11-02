@@ -66,7 +66,6 @@ def dataview_s(conn,filters):
         if __name__ == "__main__":
             main(samples)
         df = pd.read_csv(str(DOWNLOADS_PATH / "mydata.csv"))
-        s_cont.write('able to create df')
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
             if feature_name in ['designation','gid','source_study_name']:
@@ -75,6 +74,7 @@ def dataview_s(conn,filters):
                         filter
                         & (df[feature_name] == val))
         s_cont.dataframe(df[filter])
+        s_cont.write(df)
         s_cont.write('after dataframe')
         scsv = df[filter].to_csv().encode('utf-8')
         st.download_button(label='Download samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')

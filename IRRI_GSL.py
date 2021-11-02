@@ -63,6 +63,7 @@ def dataview_s(conn,filters):
         s_cont.dataframe(df[filter])
         scsv = df[filter].to_csv().encode('utf-8')
         with conn.cursor() as cur:
+            cur.itersize = 200000
             cur.execute(query)
             all = cur.fetchall()
         st.download_button(label='Download samples as CSV (visible in table)', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')

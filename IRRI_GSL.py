@@ -52,7 +52,8 @@ def dataview_s(conn,filters):
         samples = pd.read_sql_query(query, conn)
         s_cont = st.container()
         s_cont.header('Samples and Products')
-        s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward. NOTE: The table only shows the head of 1,000 rows. To view all, use the download buttons below.')
+        s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward.')
+        s_cont.write('NOTE: The table only shows the first 1,000 rows. To view all, use the download buttons below.')
         df = pd.DataFrame(samples)
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
@@ -64,8 +65,8 @@ def dataview_s(conn,filters):
         s_cont.dataframe(df[filter].head(1000))
         scsv = df[filter].to_csv().encode('utf-8')
         scsv_head = df[filter].head().to_csv().encode('utf-8')
-        st.download_button(label='Download ALL samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
-        st.download_button(label='Download Visible samples as CSV', data=scsv_head, file_name='GSL Samples/Product.csv',mime='text/csv')
+        col1.download_button(label='Download ALL samples as CSV', data=scsv, file_name='GSL Samples/Product.csv',mime='text/csv')
+        col2.download_button(label='Download Visible samples as CSV', data=scsv_head, file_name='GSL Samples/Product.csv',mime='text/csv')
         conn.close()
     except psycopg2.Error as e:
         st.write(e)

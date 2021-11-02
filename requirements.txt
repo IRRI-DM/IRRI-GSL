@@ -1,10 +1,9 @@
 streamlit==1.1.0
-pip==21.3.1
 pandas==1.2.3
 numpy==1.20.2
 gitdb==4.0.7
 GitPython==3.1.17
 ipywidgets==7.6.3
 pandas-flavor==0.2.0
-psycopg2==2.8.4
+psycopg2==2.8.2
 streamlit-theme==0.58.0

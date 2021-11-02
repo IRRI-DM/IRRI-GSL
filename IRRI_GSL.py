@@ -19,7 +19,19 @@ def page_construct():
 def init_connection():
     return psycopg2.connect(**st.secrets["postgres"])
 
-    
+#For large datasets
+STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) /'static'
+DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "downloads")
+if not DOWNLOADS_PATH.is_dir():
+    DOWNLOADS_PATH.mkdir()
+def main(df):
+    st.markdown("Download from [downloads/mydata.csv](downloads/mydata.csv)")
+    mydataframe = df
+    csv = mydataframe.to_csv(str(DOWNLOADS_PATH / "mydata.csv"), index=False)
+    return csv
+if __name__ == "__main__":
+    main(df)
+
 #Page View
 def dataview_r(conn, filters):
     try:
@@ -52,9 +64,8 @@ def dataview_s(conn,filters):
         s_cont = st.container()
         s_cont.header('Samples and Products')
         s_cont.write('Live table of GSL samples and product info used in service requests from 2019 onward.')
-        csv = samples.to_csv().encode('utf-8')
-        df = st.dataframe(csv)
-        s_cont.write('After pd data')
+        samples = main(samples)
+        df = pd.DataFrame(samples)
         filter = np.full(len(df), True)
         for feature_name, val in filters.items():
             if feature_name in ['designation','gid','source_study_name']:
